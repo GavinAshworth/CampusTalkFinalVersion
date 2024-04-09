@@ -1,21 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('loginform').addEventListener('submit', function () {
-        resetLabels();
-
-        let password = document.getElementsByName('password')[0].value;
-        let username = document.getElementsByName('username')[0].value;
-
-        if (username === "") {    // make sure username is entered
-            document.getElementById('usernamelabel').textContent = "Please enter a username";
-            document.getElementById('usernamelabel').style.color = "red";
-        } else if (password === "") {  // make sure pw is entered
-            document.getElementById('passwordlabel').textContent = "Please enter a password";
-            document.getElementById('passwordlabel').style.color = "red";
-        } else {
-            // if both are entered then process the info in php
-            sendData();
-        }
-    });
+    document.getElementById('loginform').addEventListener('submit', submission);
 
     const logoutButton = document.getElementById("logout");
     if (logoutButton) {
@@ -45,6 +29,24 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 });
+
+function submission(e) {
+    resetLabels();
+
+    let password = document.getElementsByName('password')[0].value;
+    let username = document.getElementsByName('username')[0].value;
+
+    if (username === "") {    // make sure username is entered
+        document.getElementById('usernamelabel').textContent = "Please enter a username";
+        document.getElementById('usernamelabel').style.color = "red";
+    } else if (password === "") {  // make sure pw is entered
+        document.getElementById('passwordlabel').textContent = "Please enter a password";
+        document.getElementById('passwordlabel').style.color = "red";
+    } else {
+        // if both are entered then process the info in php
+        sendData();
+    }
+}
 function sendData() {
     let formData = new FormData(document.getElementById("loginform"));
 

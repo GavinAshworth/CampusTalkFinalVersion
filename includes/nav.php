@@ -30,7 +30,7 @@ $isIndexPage = strpos($_SERVER['REQUEST_URI'], 'index.php') !== false;
             <ul class="navbar-nav me-auto mb-2 mb-md-0">
                 <li class="nav-item">
                     <!--   later we will add a variable here that will cause index.php to load posts based on likes -->
-                    <a class="nav-link" href="../pages/index.php?topic=Hot">Hot Topics</a>
+                    <a class="nav-link" href="../pages/index.php">Hot Topics</a>
                 </li>
                 <li class="nav-item">
                     <!--   later we will add a variable here that will cause index.php to load posts randomly -->
@@ -44,7 +44,8 @@ $isIndexPage = strpos($_SERVER['REQUEST_URI'], 'index.php') !== false;
                     </form>
                 <?php } ?>
 
-                <?php if (isset($_SESSION['username'])) { ?>
+                <?php if (isset ($_SESSION['username'])) { ?>
+                    <!-- Dropdown for logged-in users -->
                     <?php if ($isIndexPage) { ?>
                         <button class="btn btn-outline-light me-2" data-bs-toggle="modal" data-bs-target="#createPostModal"
                             id="createpost">Create Post</button>
@@ -101,8 +102,7 @@ $isIndexPage = strpos($_SERVER['REQUEST_URI'], 'index.php') !== false;
                 <!-- Render the image if it isn't null -->
                 <?php if ($userinfo['profileimage'] != null) { ?>
                     <p id="profile-pic">
-                        <img id="profilepic"
-                            src="data:image/png;base64,<?php echo base64_encode($userinfo['profileimage']); ?>">
+                        <img id="profilepic" src="data:image/png;base64,<?php echo base64_encode($userinfo['profileimage']); ?>">
                     <p>
                         Click edit info to add a profile picture
                     </p>
@@ -203,10 +203,8 @@ $isIndexPage = strpos($_SERVER['REQUEST_URI'], 'index.php') !== false;
                         <input type="text" class="form-control" id="new-password" name="new-password">
                     </div>
                     <div class="mb-3">
-                        <label for="new-password-confirm" class="form-label" id="new-password-confirm-label">Confirm
-                            Password</label>
-                        <input type="password" class="form-control" id="new-password-confirm"
-                            name="new-password-confirm">
+                        <label for="new-password-confirm" class="form-label" id="new-password-confirm-label">Confirm Password</label>
+                        <input type="password" class="form-control" id="new-password-confirm" name="new-password-confirm">
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
@@ -278,7 +276,7 @@ $isIndexPage = strpos($_SERVER['REQUEST_URI'], 'index.php') !== false;
                             $conn = connectToDB();
                             // Check connection
                             if ($conn->connect_error) {
-                                die("Connection failed: " . $conn->connect_error);
+                                die ("Connection failed: " . $conn->connect_error);
                             }
                             $sql = "SELECT * FROM Department";
                             $result = $conn->query($sql);

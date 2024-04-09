@@ -6,7 +6,7 @@ $referrer = isset ($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'index
 session_start();
 
 $userid = $_SESSION['userID'];
-$isEnabled = $_SESSION['isEnabled'];
+$isEnabled = $_SESSION['isEnabled'] ;
 
 try {
     // Check if user is enabled
@@ -27,7 +27,7 @@ try {
                 // Handle case where image is not uploaded
                 $image = null;
             }
-            
+
             // Insert data into the database
             $stmt = $conn->prepare("INSERT INTO Posts(title, content, userID, departmentID, postImage) VALUES(?, ?, ?, ?, ?)");
             $stmt->bind_param("ssiib", $title, $content, $userid, $dept, $image);

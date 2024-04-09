@@ -1,6 +1,4 @@
 <?php require_once ('../includes/header.php'); ?>
-<!DOCTYPE html>
-<html>
 
 <head>
     <link href="../css/index.css" rel="stylesheet">
@@ -12,28 +10,28 @@
     <?php require_once ('../includes/nav.php'); ?>
     <main>
         <div class="left">
-            <div class="sidebar-content">
-                <div class="left-sidebar-topic">
-                    <p class="sidebar-item left-item">
+            <div class = "sidebar-content">
+                <div class = "left-sidebar-topic">
+                    <p class = "sidebar-item left-item">
                         <a href="index.php">Home</a>
                     </p>
                 </div>
-                <div class="left-sidebar-topic sidebar-border-top">
-                    <p class="topic-header">
+                <div class = "left-sidebar-topic sidebar-border-top">
+                    <p class = "topic-header">
                         <span>Department</span>
                     </p>
-                    <div id="department-container">
+                    <div id = "department-container">
 
                     </div>
                 </div>
-                <div class="left-sidebar-topic sidebar-border-top">
-                    <p class="sidebar-item left-item topic-header">
+                <div class = "left-sidebar-topic sidebar-border-top">
+                    <p class = "sidebar-item left-item topic-header">
                         <a href="#">Help</a>
                     </p>
-                    <p class="sidebar-item left-item ">
+                    <p class = "sidebar-item left-item ">
                         <a href="#">Report A Problem</a>
                     </p>
-                    <p class="sidebar-item left-item ">
+                    <p class = "sidebar-item left-item ">
                         <a href="#">Contact Us</a>
                     </p>
                 </div>
@@ -43,7 +41,7 @@
             <button id="toggle-columns">Toggle Columns</button>
             <div class="posts-container">
                 <?php
-                if (isset($_GET['postId'])) {
+                if (isset ($_GET['postId'])) {
                     $postId = $_GET['postId'];
 
                     $query = "SELECT * FROM Posts JOIN Users ON Users.userID = Posts.userID WHERE postID = ?;";
@@ -82,15 +80,12 @@
                         <div class="post-container" data-id="<?php echo $posts[0]['postID'] ?>">
                             <div class="user-pic-username-container">
                                 <?php if ($posts[0]['profileimage']) { ?>
-                                    <img src="data:image/png;base64,<?php echo base64_encode($posts[0]['profileimage']); ?>"
-                                        alt="User Profile Pic">
+                                    <img src="data:image/png;base64,<?php echo base64_encode($posts[0]['profileimage']); ?>" alt="User Profile Pic">
                                 <?php } ?>
-                                <h5 class="usernames">
-                                    <?php echo htmlspecialchars($posts[0]['username']); ?>
-                                </h5>
+                                <h5 class="usernames"><?php echo htmlspecialchars($posts[0]['username']); ?></h5>
                             </div>
                             <h2 class="post-title">
-                                <?php if (isset($_SESSION['isAdmin']) && ($_SESSION['isAdmin'] == 1)) {
+                                <?php if (isset ($_SESSION['isAdmin']) && ($_SESSION['isAdmin'] == 1)) {
                                     echo "<div><button class=\"btn btn-primary edit-btn\" id=\"delete-post\">Delete Post</button></div>";
                                     echo "<div><button class=\"btn btn-primary edit-btn\" id=\"editButton\" data-bs-toggle=\"modal\" data-bs-target=\"#editPost\">Edit</button></div>";
                                 } ?>
@@ -101,13 +96,13 @@
                             </p>
 
                             <!-- Render the image if it isn't null -->
-                            <?php if ($posts[0]['postImage'] != null) { ?>
+                            <?php if($posts[0]['postImage'] != null) { ?>
 
                                 <p class="image-container post-img">
                                     <img src="data:image/png;base64,<?php echo base64_encode($posts[0]['postImage']); ?>">
                                 </p>
 
-                            <?php } ?>
+                            <?php }?>
 
                             <div class="user-input-post">
                                 <input class="form-control comment-input" id="commentBox" type="text"
@@ -144,6 +139,33 @@
                 ?>
             </div>
         </div>
+        <!-- display the admin bar if admin    -->
+        <?php if (isset ($_SESSION['isAdmin']) && ($_SESSION['isAdmin'] == 1)) { ?>
+            <div class="right">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Admin Controls</h5>
+                    </div>
+                    <div class="card-body">
+                        <form action="javascript:void(0);" method="POST" id="admin-search-form" class="d-flex flex-column">
+                            <div class="mb-3">
+                                <label for="userInformationAdminSelect" class="form-label" id="departmentLabel">Search For
+                                    User By</label>
+                                <select class="form-select" id="userInformationAdminSelect" name="userInformationAdmin">
+                                    <option value="0">Username</option>
+                                    <option value="1">Email</option>
+                                    <option value="2">Post</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <input class="form-control" id="admin-search-bar" type="search" placeholder="Search">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        <?php } ?>
 
         <!-- this will be the modal that allows an admin to edit the post -->
         <div class="modal fade" id="editPost" tabindex="-1" aria-labelledby="editPostModalLabel" aria-hidden="true">
@@ -184,7 +206,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="userModalLabel">Search Results</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
                     </div>
                     <div class="modal-body" id="userModalBody">
                         <!-- Users will be populated here -->
@@ -197,7 +219,3 @@
         </div>
     </main>
     <?php require_once ('../includes/footer.php'); ?>
-
-</body>
-
-</html>

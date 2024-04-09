@@ -72,7 +72,7 @@ try {
             }
         }
     } else {
-//        echo json_encode(array("error111" => "missing data", "redirect" => "$referrer"));
+        echo json_encode(array("error" => "missing data", "redirect" => "$referrer"));
     }
 } catch (Exception $e) {
     // Handle exception

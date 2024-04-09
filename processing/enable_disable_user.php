@@ -10,7 +10,7 @@ try {
     $newIsEnabledValue = $_POST['newIsEnabledValue'];
 
 
-        $stmt = $conn->prepare("UPDATE Users SET isEnabled = ? WHERE userID = ?");
+        $stmt = $conn->prepare("UPDATE users SET isEnabled = ? WHERE userID = ?");
         $stmt->bind_param("ii", $newIsEnabledValue,$userID);
         $stmt->execute();
 

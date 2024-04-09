@@ -1,24 +1,14 @@
-document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('toggle-columns').addEventListener('click', function () {
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('toggle-columns').addEventListener('click', function() {
         document.querySelector('.left').classList.toggle('collapsed');
         document.querySelector('.right').classList.toggle('collapsed');
     });
-    document.addEventListener('submit', function(){
-        handleCourseSearch();
-    })
-
-
     //display most recent posts on page load. This is for registered and non-registered users
     let urlParams = new URLSearchParams(window.location.search);
     let dataId = urlParams.get('dataId');
-    //display hot topics if user clicked on hot topic button
-    let topic = urlParams.get('topic');
-    if (topic){
-        displayPostsOnLoad('all', 'none', true);
-    }
-    else if (dataId) {
+    if(dataId) {
         displayPostsOnLoad(dataId, 'none');
-    } else {
+    }else{
         let initialPostDepartment = "all"
         displayPostsOnLoad(initialPostDepartment, 'none');
     }
@@ -27,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
     //display all departments on load
     displayDepartmentsOnLoad();
 
-    if (document.getElementById('admin-search-form')) {
+    if(document.getElementById('admin-search-form')) {
         document.getElementById('admin-search-form').addEventListener('submit', function (event) {
             event.preventDefault(); // Prevent the default form submission
 
@@ -51,7 +41,7 @@ function handleAdminSearch(query, type) {
         xhr.open('POST', '../processing/search_users.php', true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
-        xhr.onload = function () {
+        xhr.onload = function() {
             if (xhr.status >= 200 && xhr.status < 300) {
                 console.log(xhr);
                 let responseData = JSON.parse(xhr.responseText);
@@ -61,7 +51,7 @@ function handleAdminSearch(query, type) {
             }
         };
 
-        xhr.onerror = function () {
+        xhr.onerror = function() {
             console.error('Error searching users:', xhr.statusText);
         };
 
@@ -119,23 +109,23 @@ function displayUsersModal(users) {
     userModal.show();
 }
 
-function enableUser() {
+function enableUser(){
     let userID = this.getAttribute('data-user-id');
     let newIsEnabledValue = 1;
-    toggleEnabled(userID, newIsEnabledValue);
+    toggleEnabled(userID,newIsEnabledValue);
 }
-function disableUser() {
+function disableUser(){
     let userID = this.getAttribute('data-user-id');
     let newIsEnabledValue = 0;
-    toggleEnabled(userID, newIsEnabledValue);
+    toggleEnabled(userID,newIsEnabledValue);
 }
-function toggleEnabled(userID, newIsEnabledValue) {
+function toggleEnabled(userID, newIsEnabledValue){
 
-    let xhr = new XMLHttpRequest();
-    xhr.open('POST', '../processing/enable_disable_user.php', true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', '../processing/enable_disable_user.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
-    xhr.onload = function () {
+    xhr.onload = function() {
         if (xhr.status >= 200 && xhr.status < 300) {
             let responseData = JSON.parse(xhr.responseText);
 
@@ -161,47 +151,47 @@ function toggleEnabled(userID, newIsEnabledValue) {
         }
     };
 
-    xhr.onerror = function () {
-        console.error('Error disabling/enabling users', xhr.statusText);
-    };
+        xhr.onerror = function() {
+            console.error('Error disabling/enabling users', xhr.statusText);
+        };
 
-    // Send the query and type as POST data
-    let enabledData = `userID=${encodeURIComponent(userID)}&newIsEnabledValue=${encodeURIComponent(newIsEnabledValue)}`;
-    xhr.send(enabledData);
+        // Send the query and type as POST data
+        let enabledData = `userID=${encodeURIComponent(userID)}&newIsEnabledValue=${encodeURIComponent(newIsEnabledValue)}`;
+        xhr.send(enabledData);
 
 }
-function displayPostsOnLoad(department, key, isHotTopic) {
-    //this is for loading posts based on like count
-    if (isHotTopic == null) isHotTopic = false;
+function displayPostsOnLoad(department, key){
     let postsContainer = document.querySelector('.posts-container');
     postsContainer.innerHTML = '';
     // Make an AJAX request to fetch posts data from get_posts.php
     let xhr = new XMLHttpRequest();
-    xhr.open('GET', `../processing/get_posts.php?department=${department}&key=${key}&isHotTopic=${isHotTopic}`, true);
-    xhr.onload = function () {
+    xhr.open('GET', `../processing/get_posts.php?department=${department}&key=${key}`, true);
+    xhr.onload = function() {
+        console.log(xhr);
+        console.log(xhr.responseText);
         if (xhr.status >= 200 && xhr.status < 400) {
             // Parse the JSON response. This will return an array of posts
             let posts = JSON.parse(xhr.responseText);
-
+            
             // Iterate through the posts and display them
-            posts.forEach(function (post) {
+            posts.forEach(function(post) {
                 // Create HTML elements for post title, content, and image
                 let link = document.createElement('div');
                 link.classList.add('post-link');
 
-                link.addEventListener('click', function (event) {
+                link.addEventListener('click', function(event) {
                     if (!event.target.classList.contains('like-btn') && !event.target.classList.contains('like-count')) {
                         let postId = post.postID; // Assuming post.postID contains the ID
                         sessionStorage.setItem('postId', postId);
                         // Redirect to post.php
-                        window.location.href = 'post.php?postId=' + postId;
+                        window.location.href = 'post.php?postId=' + postId;                    
                     }
                 });
 
                 // create a div for username and user image
                 let userInfoContainer = document.createElement('div');
                 userInfoContainer.classList.add("user-pic-username-container");
-
+                
                 // profile pic
                 let userProfilePic = document.createElement('img');
                 userProfilePic.src = 'data:image/png;base64,' + post.profilepic;
@@ -210,10 +200,11 @@ function displayPostsOnLoad(department, key, isHotTopic) {
                 let username = document.createElement('h5');
                 username.classList.add('usernames');
                 username.innerHTML = post.username;
+                console.log(post.username);
 
-                if (post.profilepic) userInfoContainer.appendChild(userProfilePic);
+                if(post.profilepic) userInfoContainer.appendChild(userProfilePic);
                 userInfoContainer.appendChild(username);
-
+                
 
                 let commentInput = document.createElement('input');
                 commentInput.classList.add('form-control', 'comment-input');
@@ -247,7 +238,7 @@ function displayPostsOnLoad(department, key, isHotTopic) {
                 likeButton.setAttribute('data-post-id', post.postID);
                 likeButton.textContent = 'Like';
                 //if the post has alreayd been liked we display that
-                if (post.isLiked) {
+                if(post.isLiked){
                     likeButton.classList.add('liked');
                 }
 
@@ -256,7 +247,7 @@ function displayPostsOnLoad(department, key, isHotTopic) {
                 likeCount.textContent = post.numLikes;
                 likeButton.appendChild(likeCount);
 
-                likeButton.addEventListener('click', function (event) {
+                likeButton.addEventListener('click', function(event) {
                     let clickedButton = event.currentTarget;
                     let likeCount = clickedButton.querySelector('.like-count');
                     likePost(clickedButton.getAttribute('data-post-id'), likeCount);
@@ -265,7 +256,7 @@ function displayPostsOnLoad(department, key, isHotTopic) {
                 userInputContainer.appendChild(commentInput);
 
                 userInputContainer.appendChild(likeButton);
-                if (post.postImage) {
+                if(post.postImage){
                     imageContainer.appendChild(imageElement);
                 }
 
@@ -279,38 +270,38 @@ function displayPostsOnLoad(department, key, isHotTopic) {
                 link.appendChild(postContainer);
                 postsContainer.appendChild(link);
             });
-        } else {
+        }    else {
             console.error('Error fetching posts:', xhr.statusText);
         }
     };
-    xhr.onerror = function () {
+    xhr.onerror = function() {
         console.error('Error fetching posts:', xhr.statusText);
     };
     xhr.send();
 }
 
 
-function displayDepartmentsOnLoad() {
+function displayDepartmentsOnLoad(){
     let departmentContainer = document.querySelector('#department-container');
     // Make an AJAX request to fetch posts data from get_posts.php
     let xhr = new XMLHttpRequest();
     xhr.open('GET', '../processing/get_departments.php', true);
-    xhr.onload = function () {
+    xhr.onload = function() {
         if (xhr.status >= 200 && xhr.status < 400) {
             // Parse the JSON response. This will return an array of posts
             let departments = JSON.parse(xhr.responseText);
 
             // Iterate through the posts and display them
-            departments.forEach(function (department) {
+            departments.forEach(function(department) {
                 // Create HTML elements for post title, content, and image
                 let departmentP = document.createElement('p');
                 departmentP.classList.add('sidebar-item', 'left-item', 'department');
 
                 let link = document.createElement('a');
                 link.setAttribute('data-id', department.departmentID);
-                link.setAttribute('href', '#');
+                link.setAttribute('href','#');
                 link.textContent = department.departmentName;
-                link.onclick = function () {
+                link.onclick = function() {
                     displayPostsOnLoad(this.getAttribute('data-id'), 'none');
                 };
 
@@ -323,7 +314,7 @@ function displayDepartmentsOnLoad() {
             console.error('Error fetching departments:', xhr.statusText);
         }
     };
-    xhr.onerror = function () {
+    xhr.onerror = function() {
         console.error('Error fetching posts:', xhr.statusText);
     };
     xhr.send();
@@ -371,87 +362,4 @@ function highlightLikeButton(postId) {
 function unhighlightLikeButton(postId) {
     const likeButton = document.querySelector(`.like-btn[data-post-id="${postId}"]`);
     likeButton.classList.remove('liked');
-}
-
-// this is for searching a post
-function handleCourseSearch() {
-    let query = document.getElementById('course-search-bar').value;
-    document.getElementById('course-search-bar').style.removeProperty('border-color');
-
-    let xhr = new XMLHttpRequest();
-    xhr.open('POST', '../processing/searchcourse.php', true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-    xhr.onload = function () {
-        if (xhr.status >= 200 && xhr.status < 400) {
-            console.log(xhr);
-            let responseData = JSON.parse(xhr.responseText);
-            displayCourses(responseData.courses);
-        } else {
-            console.log('Error searching courses:', xhr.statusText);
-        }
-    };
-
-    let params = 'courseName=' + encodeURIComponent(query);
-
-    xhr.send(params);
-}
-function displayCourses(courses){
-    const modalBody = document.getElementById('course-modal-body');
-
-    // Clear previous content
-    modalBody.innerHTML = '';
-
-    // Populate modal with fetched users
-    courses.forEach(course => {
-        const courseContainer = document.createElement('div');
-        courseContainer.classList.add('course-container');
-        courseContainer.style.display = 'flex';
-        courseContainer.style.alignItems = 'center';
-        courseContainer.style.margin = '0.25em';
-
-        const courseElement = document.createElement('p');
-        courseElement.textContent = course.name;
-        courseElement.style.flexGrow = '1';
-        courseContainer.appendChild(courseElement);
-
-        // Check if the user is enabled
-        // If enabled, display disable button
-        const join = document.createElement('button');
-        join.textContent = 'join';
-        join.classList.add('btn', 'btn-sm','btn-success');
-        join.style.marginLeft = '10px';
-        join.setAttribute('data-course-id', course.courseID);
-
-        join.addEventListener('click', function(){
-            joinCourse(course.courseID);
-            courseContainer.style.display = 'none';
-        });   //event listener for joining
-
-        courseContainer.appendChild(join);
-
-        modalBody.appendChild(courseContainer);
-    });
-
-    // Show the modal
-    const courseModal = new bootstrap.Modal(document.getElementById('course-modal'));
-    courseModal.show();
-}
-function joinCourse(cid){
-    let xhr = new XMLHttpRequest();
-    xhr.open('POST', '../processing/joincourse.php', true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-    xhr.onload = function () {
-        if (xhr.status >= 200 && xhr.status < 400) {
-            console.log(xhr);
-            let responseData = JSON.parse(xhr.responseText);
-        } else {
-            console.log('Error joining courses:', xhr.statusText);
-        }
-    };
-
-    let params = 'cid=' + encodeURIComponent(cid);
-
-    xhr.send(params);
 }

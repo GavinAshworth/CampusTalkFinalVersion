@@ -12,7 +12,7 @@ try {
 
     if ($searchType == 0) {
         // Search by username
-        $stmt = $conn->prepare("SELECT username, isEnabled, userID FROM Users WHERE username LIKE ?");
+        $stmt = $conn->prepare("SELECT username, isEnabled, userID FROM users WHERE username LIKE ?");
         $searchTermLike = "%" . $searchTerm . "%";
         $stmt->bind_param("s", $searchTermLike);
         $stmt->execute();
@@ -24,7 +24,7 @@ try {
 
     } elseif ($searchType == 1) {
         // Search by email
-        $stmt = $conn->prepare("SELECT username, isEnabled, userID FROM Users WHERE email LIKE ?");
+        $stmt = $conn->prepare("SELECT username, isEnabled, userID FROM users WHERE email LIKE ?");
         $searchTermLike = "%" . $searchTerm . "%";
         $stmt->bind_param("s", $searchTermLike);
         $stmt->execute();
@@ -36,7 +36,7 @@ try {
 
     } elseif ($searchType == 2) {
         // Search by post title and then fetch users
-        $stmt = $conn->prepare("SELECT userID FROM Posts WHERE title LIKE ?");
+        $stmt = $conn->prepare("SELECT userID FROM posts WHERE title LIKE ?");
         $searchTermLike = "%" . $searchTerm . "%";
         $stmt->bind_param("s", $searchTermLike);
         $stmt->execute();
@@ -50,7 +50,7 @@ try {
 
         // Search users by the fetched userIDs
         $userIDsStr = implode(",", $userIDs);
-        $stmtUsers = $conn->prepare("SELECT username, isEnabled, userID FROM Users WHERE userID IN ($userIDsStr)");
+        $stmtUsers = $conn->prepare("SELECT username, isEnabled, userID FROM users WHERE userID IN ($userIDsStr)");
         $stmtUsers->execute();
         $resultUsers = $stmtUsers->get_result();
 

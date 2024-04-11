@@ -1,6 +1,4 @@
 <?php require_once ('../includes/header.php'); ?>
-<!DOCTYPE html>
-<html>
 
 <head>
     <link href="../css/index.css" rel="stylesheet">

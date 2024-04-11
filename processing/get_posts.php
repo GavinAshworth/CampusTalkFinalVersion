@@ -89,7 +89,6 @@ function getPosts() {
                     'userID' => $row['userID'],
                     'departmentID' => $row['departmentID'],
                     'departmentName' => $departmentName, // Include the department name
-                    'courseID' => $row['courseID'],
                     'postImage' => $imageData, // Include the image data
                     'createdAt' => $row['createdAt'],
                     'username' => $row['username'],
